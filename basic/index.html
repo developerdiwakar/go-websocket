@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>WebSocket Test</title>
+    <title>Basic WebSocket Server with Gorilla WebSocket</title>
 </head>
 
 <body>
@@ -10,7 +10,8 @@
     <button onclick="connect()">Connect</button>
     <h4>Send Message</h4>
     <form onsubmit="sendMessage(event)">
-        <textarea name="messageInput" id="messageInput" placeholder="Write some text and Press 'Send'"></textarea>
+        <textarea name="messageInput" id="messageInput" placeholder="Write some text and Press 'Send'" rows="5"
+            cols="40"></textarea>
         <button style="display: block;">Send</button>
     </form>
     <p id="output"></p>
@@ -22,19 +23,19 @@
             socket = new WebSocket("ws://localhost:8080/ws");
 
             socket.onopen = function (event) {
-                document.getElementById("output").innerHTML += "Connected<br>";
+                document.getElementById("output").innerHTML += "<div style='color:#0bd60b'>Connected</div>";
             };
 
             socket.onmessage = function (event) {
-                document.getElementById("output").innerHTML += "Received: " + event.data + "<br>";
+                document.getElementById("output").innerHTML += "<div>Received: <b>" + event.data + "</b></div>";
             };
 
             socket.onclose = function (event) {
-                document.getElementById("output").innerHTML += "Disconnected<br>";
+                document.getElementById("output").innerHTML += "<div style='color:red'>Disconnected</div>";
             };
 
             socket.onerror = function (event) {
-                document.getElementById("output").innerHTML += "Error: " + event.data + "<br>";
+                document.getElementById("output").innerHTML += "<div style='color:red'>Error: " + event.data + "</div>";
             };
         }
 
