@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WebSocket Test</title>
+</head>
+
+<body>
+    <h1>WebSocket Test</h1>
+    <button onclick="connect()">Connect</button>
+    <h4>Send Message</h4>
+    <form onsubmit="sendMessage(event)">
+        <textarea name="messageInput" id="messageInput" placeholder="Write some text and Press 'Send'"></textarea>
+        <button style="display: block;">Send</button>
+    </form>
+    <p id="output"></p>
+
+    <script>
+        var socket;
+
+        function connect() {
+            socket = new WebSocket("ws://localhost:8080/ws");
+
+            socket.onopen = function (event) {
+                document.getElementById("output").innerHTML += "Connected<br>";
+            };
+
+            socket.onmessage = function (event) {
+                document.getElementById("output").innerHTML += "Received: " + event.data + "<br>";
+            };
+
+            socket.onclose = function (event) {
+                document.getElementById("output").innerHTML += "Disconnected<br>";
+            };
+
+            socket.onerror = function (event) {
+                document.getElementById("output").innerHTML += "Error: " + event.data + "<br>";
+            };
+        }
+
+        function sendMessage(event) {
+            event.preventDefault();
+            let messageInput = document.getElementById("messageInput");
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(messageInput.value);
+                messageInput.value = ""
+                messageInput.focus()
+            } else {
+                alert("Socket is not open.");
+            }
+        }
+    </script>
+</body>
+
+</html>
